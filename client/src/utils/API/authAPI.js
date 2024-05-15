@@ -1,12 +1,11 @@
-import axios from 'axios'
-import instance from './axios'
+import instance from './axiosConfig'
 import store from '../redux/store'
 import * as actions from '../redux/action'
-const BASE_URL = process.env.REACT_APP_BASE_URL
+
 
 const authAPI = {
     register: async (userData) => {
-        const response = await axios.post(`${BASE_URL}/register`, userData)
+        const response = await instance.post(`/register`, userData)
         if (response.status === 200) {
             let status = response.data
             if (status.auth) {
@@ -21,7 +20,7 @@ const authAPI = {
     },
 
     login: async (userData) => {
-        const response = await axios.post(`${BASE_URL}/login`, userData)
+        const response = await instance.post(`/login`, userData)
         if (response.status === 200) {
             if (response.data.auth) {
                 let { userInfo, token } = response.data
@@ -34,7 +33,7 @@ const authAPI = {
     },
 
     logout: async () => {
-        const response = await axios.post(`${BASE_URL}/logout`)
+        const response = await instance.post(`/logout`)
         // console.log(response)
         if (response.status === 200) {
             store.dispatch(actions.logout())
@@ -45,7 +44,7 @@ const authAPI = {
         // console.log('test')
         let token = sessionStorage.getItem('token')
         // console.log(token)
-        const response = await axios.post(`${BASE_URL}`, { token })
+        const response = await instance.post(`/`, { token })
         // console.log(response)
         if (response.status === 200) {
             let status = response.data
@@ -59,7 +58,7 @@ const authAPI = {
     },
 
     getUsers: async () => {
-        const response = await axios.get(`${BASE_URL}/getUsers`)
+        const response = await instance.get(`/getUsers`)
         console.log(response)
         if (response.status === 200) {
             let { user } = response.data
